@@ -1,0 +1,13 @@
+{
+  "require" : {
+    "cilex/cilex" : "1.1.0",
+    "cloudobjects/sdk" : "dev-master"
+  },
+  "minimum-stability": "dev",
+  "bin" : ["cloudobjects.php"],
+  "autoload": {
+		"psr-4": {
+			"CloudObjects\\CLI\\" : "classes"
+		}
+	}
+}
