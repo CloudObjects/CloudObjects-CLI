@@ -24,4 +24,8 @@ $app->command(new Commands\MembersListCommand);
 $app->command(new Commands\MembersAddCommand);
 $app->command(new Commands\MembersRemoveCommand);
 
+$app->command(new Commands\ConsumersListCommand);
+$app->command(new Commands\ConsumersAddCommand);
+$app->command(new Commands\ConsumersRemoveCommand);
+
 $app->run();
