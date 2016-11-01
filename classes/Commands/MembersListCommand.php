@@ -12,7 +12,7 @@ class MembersListCommand extends Command {
 
   protected function configure() {
     $this->setName('domain-members:list')
-      ->setDescription('List all the accounts that are members of this domain along with their roles.')
+      ->setDescription('List all the accounts that are members of a domain along with their roles.')
       ->addArgument('hostname', InputArgument::REQUIRED, 'The hostname of the domain.');
   }
 

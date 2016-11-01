@@ -12,7 +12,7 @@ class MembersAddCommand extends Command {
 
   protected function configure() {
     $this->setName('domain-members:add')
-      ->setDescription('Adds an account as a member to this domain or updates the role.')
+      ->setDescription('Adds an account as a member to a domain or updates the role.')
       ->addArgument('hostname', InputArgument::REQUIRED, 'The hostname of the domain.')
       ->addArgument('aauid', InputArgument::REQUIRED, 'The AAUID of the account.')
       ->addArgument('role', InputArgument::REQUIRED, 'The COID of the role object.');
