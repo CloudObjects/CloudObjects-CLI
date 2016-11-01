@@ -19,4 +19,9 @@ $app->command(new Commands\SharedSecretGetCommand());
 $app->command(new Commands\AccountGatewayGetAccessTokenCommand());
 $app->command(new Commands\AttachmentGetCommand());
 $app->command(new Commands\AttachmentPutCommand());
+
+$app->command(new Commands\MembersListCommand);
+$app->command(new Commands\MembersAddCommand);
+$app->command(new Commands\MembersRemoveCommand);
+
 $app->run();
