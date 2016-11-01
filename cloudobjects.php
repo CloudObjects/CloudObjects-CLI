@@ -28,4 +28,7 @@ $app->command(new Commands\ConsumersListCommand);
 $app->command(new Commands\ConsumersAddCommand);
 $app->command(new Commands\ConsumersRemoveCommand);
 
+$app->command(new Commands\ProvidersListCommand);
+$app->command(new Commands\ProvidersRemoveCommand);
+
 $app->run();
