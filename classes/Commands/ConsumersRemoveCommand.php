@@ -13,7 +13,7 @@ class ConsumersRemoveCommand extends Command {
   protected function configure() {
     $this->setName('domain-consumers:remove')
       ->setDescription('Removes the consumer association of two domains.')
-      ->addArgument('hostname', InputArgument::REQUIRED, 'The hostname of the domain.')
+      ->addArgument('hostname', InputArgument::REQUIRED, 'The hostname of the first domain.')
       ->addArgument('hostname2', InputArgument::REQUIRED, 'The hostname of the second domain.');
   }
 

@@ -13,7 +13,7 @@ class ProvidersRemoveCommand extends Command {
   protected function configure() {
     $this->setName('domain-providers:remove')
       ->setDescription('Removes the provider association of two domains.')
-      ->addArgument('hostname', InputArgument::REQUIRED, 'The hostname of the domain.')
+      ->addArgument('hostname', InputArgument::REQUIRED, 'The hostname of the first domain.')
       ->addArgument('hostname2', InputArgument::REQUIRED, 'The hostname of the second domain.');
   }
 
