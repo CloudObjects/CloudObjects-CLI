@@ -27,8 +27,8 @@ class ConfigurationJobCreateCommand extends Command {
     } else throw new \Exception("No filename!");
     // TODO: If no file is specified, data is read from standard input.
 
-    $logResponse = $app['context']->getClient()->post('/ws/configurationJob',
-      [ 'body' => $content ])->send();
+    $app['context']->getClient()->post('/ws/configurationJob',
+      [ 'body' => $content ]);
     $output->writeln('Configuration job has been created.');
     UpdateChecker::execute($app, $output);
   }

@@ -51,9 +51,9 @@ class ObjectGetCommand extends Command {
     }
 
     $objectResponse = $app['context']->getClient()
-      ->get('/ws/'.$coid->getHost().$coid->getPath().'/object', array(
-        'Accept' => $mimeType
-      ));
+      ->get('/ws/'.$coid->getHost().$coid->getPath().'/object', [
+        'headers' => ['Accept' => $mimeType]
+      ]);
 
     $output->writeln((string)$objectResponse->getBody());
     UpdateChecker::execute($app, $output);
