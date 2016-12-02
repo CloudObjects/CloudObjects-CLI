@@ -39,11 +39,10 @@ class MembersAddCommand extends Command {
       return;
     }
 
-    $membersResponse = json_decode($app['context']->getClient()
+    $app['context']->getClient()
       ->put('/dr/'.$input->getArgument('hostname').'/members/'.AAUIDParser::getAAUID($aauid), [
         'form_params' => [ 'role' => (string)$role ]
-      ])
-      ->getBody(), true);
+      ]);
   }
 
 }

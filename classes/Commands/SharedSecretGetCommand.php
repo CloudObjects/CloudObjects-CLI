@@ -2,8 +2,7 @@
 
 namespace CloudObjects\CLI\Commands;
 
-use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument,
-Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Cilex\Command\Command;
 use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
@@ -36,10 +35,9 @@ class SharedSecretGetCommand extends Command {
     }
 
     $secretResponse = $app['context']->getClient()
-      ->get('/ws/'.$coid1->getHost().'/sharedSecret:'.$coid2->getHost())
-      ->send();
+      ->get('/ws/'.$coid1->getHost().'/sharedSecret:'.$coid2->getHost());
 
-    $output->writeln($secretResponse->getBody(true));
+    $output->writeln($secretResponse->getBody()->getContents());
     UpdateChecker::execute($app, $output);
   }
 

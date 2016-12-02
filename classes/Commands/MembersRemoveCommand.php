@@ -32,9 +32,8 @@ class MembersRemoveCommand extends Command {
       return;
     }
 
-    $membersResponse = json_decode($app['context']->getClient()
-      ->delete('/dr/'.$input->getArgument('hostname').'/members/'.AAUIDParser::getAAUID($aauid))
-      ->getBody(), true);
+    $app['context']->getClient()
+      ->delete('/dr/'.$input->getArgument('hostname').'/members/'.AAUIDParser::getAAUID($aauid));
   }
 
 }

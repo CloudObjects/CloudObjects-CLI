@@ -2,10 +2,10 @@
 
 namespace CloudObjects\CLI\Commands;
 
-use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Cilex\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\CredentialManager;
+use CloudObjects\CLI\NotAuthorizedException;
 use CloudObjects\SDK\AccountGateway\AAUIDParser;
 use GuzzleHttp\Client;
 

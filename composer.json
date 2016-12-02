@@ -1,4 +1,8 @@
 {
+  "name" : "cloudobjects/cli",
+  "description" : "Command Line Interface for CloudObjects.",
+  "homepage" : "https://github.com/CloudObjects/CloudObjects-CLI",
+  "license": "MPL-2.0",
   "require" : {
     "cilex/cilex" : "1.1.0",
     "cloudobjects/sdk" : "dev-master"

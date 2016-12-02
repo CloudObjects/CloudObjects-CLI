@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\In
 use Symfony\Component\Console\Output\OutputInterface;
 use Cilex\Command\Command;
 use CloudObjects\CLI\NotAuthorizedException;
-use CloudObjects\SDK\COIDParser, CloudObjects\SDK\AccountGateway\AAUIDParser;
+use CloudObjects\SDK\COIDParser;
 
 class ConsumersRemoveCommand extends Command {
 
@@ -31,9 +31,8 @@ class ConsumersRemoveCommand extends Command {
       return;
     }
 
-    $consumersResponse = json_decode($app['context']->getClient()
-      ->delete('/dr/'.$input->getArgument('hostname').'/consumers/'.$input->getArgument('hostname2'))
-      ->getBody(), true);
+    $app['context']->getClient()
+      ->delete('/dr/'.$input->getArgument('hostname').'/consumers/'.$input->getArgument('hostname2'));
   }
 
 }

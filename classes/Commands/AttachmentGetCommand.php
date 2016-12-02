@@ -12,7 +12,6 @@ class AttachmentGetCommand extends Command {
 
   protected function configure() {
     $this->setName('attachment:get')
-      ->setAliases(array('attach'))
       ->setDescription('Retrieve the contents of an attachment of an object.')
       ->addArgument('coid', InputArgument::REQUIRED, 'The COID of the object.')
       ->addArgument('filename', InputArgument::REQUIRED, 'The filename for the attachment.');

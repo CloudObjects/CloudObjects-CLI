@@ -5,7 +5,6 @@ namespace CloudObjects\CLI\Commands;
 use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Cilex\Command\Command;
-use ML\IRI\IRI;
 use CloudObjects\CLI\NotAuthorizedException;
 use CloudObjects\SDK\COIDParser;
 use CloudObjects\SDK\AccountGateway\AAUIDParser;

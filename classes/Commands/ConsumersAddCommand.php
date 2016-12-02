@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\In
 use Symfony\Component\Console\Output\OutputInterface;
 use Cilex\Command\Command;
 use CloudObjects\CLI\NotAuthorizedException;
-use CloudObjects\SDK\COIDParser, CloudObjects\SDK\AccountGateway\AAUIDParser;
+use CloudObjects\SDK\COIDParser;
 
 class ConsumersAddCommand extends Command {
 
@@ -38,11 +38,10 @@ class ConsumersAddCommand extends Command {
       return;
     }
 
-    $consumersResponse = json_decode($app['context']->getClient()
+    $app['context']->getClient()
       ->put('/dr/'.$input->getArgument('hostname').'/consumers/'.$input->getArgument('hostname2'), [
         'form_params' => [ 'role' => (string)$role ]
-      ])
-      ->getBody(), true);
+      ]);
   }
 
 }
