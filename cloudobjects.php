@@ -12,11 +12,16 @@ $app->command(new Commands\SelfUpdateCommand());
 $app->command(new Commands\AuthorizeCommand());
 $app->command(new Commands\DeauthorizeCommand());
 $app->command(new Commands\AccountCommand());
+
 $app->command(new Commands\ConfigurationJobCreateCommand());
 $app->command(new Commands\ConfigurationJobMessagesCommand());
+
 $app->command(new Commands\ObjectGetCommand());
-$app->command(new Commands\SharedSecretGetCommand());
-$app->command(new Commands\AccountGatewayGetAccessTokenCommand());
+$app->command(new Commands\ObjectDeleteCommand());
+
+/*$app->command(new Commands\SharedSecretGetCommand());
+$app->command(new Commands\AccountGatewayGetAccessTokenCommand()); */
+
 $app->command(new Commands\AttachmentGetCommand());
 $app->command(new Commands\AttachmentPutCommand());
 
