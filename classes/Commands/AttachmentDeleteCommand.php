@@ -5,14 +5,15 @@ namespace CloudObjects\CLI\Commands;
 use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Cilex\Command\Command;
+use GuzzleHttp\Exception\BadResponseException;
 use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
 use CloudObjects\SDK\COIDParser;
 
-class AttachmentGetCommand extends Command {
+class AttachmentDeleteCommand extends Command {
 
   protected function configure() {
-    $this->setName('attachment:get')
-      ->setDescription('Retrieve the contents of an attachment of an object.')
+    $this->setName('attachment:delete')
+      ->setDescription('Deletes an object attachment.')
       ->addArgument('coid', InputArgument::REQUIRED, 'The COID of the object.')
       ->addArgument('filename', InputArgument::REQUIRED, 'The filename for the attachment.');
   }
@@ -30,10 +31,15 @@ class AttachmentGetCommand extends Command {
 
     $filename = $input->getArgument('filename');
 
-    $attachmentResponse = $app['context']->getClient()
-      ->get('/ws/'.$coid->getHost().$coid->getPath().'/'.basename($filename));
-
-    $output->writeln((string)$attachmentResponse->getBody());
+    try {
+      $app['context']->getClient()->delete('/ws/'.$coid->getHost().$coid->getPath().'/'
+        .basename($filename), [ 'body' => ' ' ]);
+      return 0;
+    } catch (BadResponseException $e) {
+      $jsonBody = json_decode($e->getResponse()->getBody(), true);
+      $output->writeln('<error>'.(isset($jsonBody['error']) ? $jsonBody['error'] : $e->getMessage()).'</error>');
+      return -3;
+    }
     UpdateChecker::execute($app, $output);
   }
 

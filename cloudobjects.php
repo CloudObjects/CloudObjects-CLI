@@ -24,6 +24,7 @@ $app->command(new Commands\AccountGatewayGetAccessTokenCommand()); */
 
 $app->command(new Commands\AttachmentGetCommand());
 $app->command(new Commands\AttachmentPutCommand());
+$app->command(new Commands\AttachmentDeleteCommand());
 
 $app->command(new Commands\MembersListCommand);
 $app->command(new Commands\MembersAddCommand);

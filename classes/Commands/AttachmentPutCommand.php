@@ -26,7 +26,7 @@ class AttachmentPutCommand extends Command {
 
     if (COIDParser::getType($coid)==COIDParser::COID_INVALID) {
       $output->writeln('<error>Invalid COID: '.(string)$coid.'</error>');
-      return;
+      return -1;
     }
 
     $filename = $input->getArgument('filename');
