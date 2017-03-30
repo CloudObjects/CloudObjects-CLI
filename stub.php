@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 Phar::mapPhar('');
 require 'phar://' . __FILE__ . '/cloudobjects.php';
