@@ -19,9 +19,7 @@ class ConfigurationJobMessagesCommand extends Command {
     $app = $this->getContainer();
     if (!isset($app['context'])) throw new NotAuthorizedException();
 
-    $logResponse = json_decode($app['context']->getClient()->delete('/ws/messages',
-      [ 'body' => ' ' ])->getBody(), true);
-
+    $logResponse = json_decode($app['context']->getClient()->delete('/ws/messages')->getBody(), true);
     if (isset($logResponse['messages']) && count($logResponse['messages'])==0) {
       $output->writeln('There are no messages available.');
     } else
