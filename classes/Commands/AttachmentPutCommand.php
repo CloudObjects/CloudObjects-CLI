@@ -12,7 +12,6 @@ class AttachmentPutCommand extends Command {
 
   protected function configure() {
     $this->setName('attachment:put')
-      ->setAliases(array('attach'))
       ->setDescription('Upload the contents of a file as an attachment to an object.')
       ->addArgument('coid', InputArgument::REQUIRED, 'The COID of the object.')
       ->addArgument('filename', InputArgument::REQUIRED, 'The filename for the attachment.');
