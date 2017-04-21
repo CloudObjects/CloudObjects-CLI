@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:console="coid://console.cloudobjects.io/"
+  xmlns:agws="coid://accountgateways.cloudobjects.io/"
+  xmlns:co="coid://cloudobjects.io/">
+
+  <console:Application rdf:about="coid://cloudobjects.io/CLITool/0.2">
+    <agws:hasApplicationMountPoint>
+      <agws:ApplicationMountPoint>
+        <agws:mountsAPI rdf:resource="coid://cloudobjects.io/DeveloperObjectAPI/1.0"/>
+        <agws:mountsOnPath>ws</agws:mountsOnPath>
+      </agws:ApplicationMountPoint>
+    </agws:hasApplicationMountPoint>
+    <agws:hasApplicationMountPoint>
+      <agws:ApplicationMountPoint>
+        <agws:mountsAPI rdf:resource="coid://cloudobjects.io/DomainRelationsAPI/1.0"/>
+        <agws:mountsOnPath>dr</agws:mountsOnPath>
+      </agws:ApplicationMountPoint>
+    </agws:hasApplicationMountPoint>
+    <co:isVisibleTo rdf:resource="coid://cloudobjects.io/Public"/>
+  </console:Application>
+
+</rdf:RDF>

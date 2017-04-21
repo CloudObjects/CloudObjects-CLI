@@ -39,7 +39,7 @@ class RoboFile extends \Robo\Tasks {
         $pharTask->run();
 
         // Verify Phar is packed correctly
-        $code = $this->_exec('php CloudObjects-CLI-alt.phar');
+        $code = $this->_exec('php CloudObjects-CLI.phar');
     }
 
 }
