@@ -24,8 +24,9 @@ class SelfUpdateCommand extends Command {
     $app = $this->getContainer();
     if (!isset($app['context'])) throw new NotAuthorizedException();
 
+    $aauid = AAUIDParser::getAAUID($app['context']->getAAUID());
     $client = new Client([
-      'base_uri' => 'https://'.AAUIDParser::getAAUID($app['context']->getAAUID()).'.aauid.net/'
+      'base_uri' => 'https://'.$aauid.'.aauid.net/'
     ]);
 
     // Check for update
@@ -44,10 +45,9 @@ class SelfUpdateCommand extends Command {
       // Update found, download it
       // TODO: find out how this works in Guzzle 6
       $output->writeln('Downloading new version ...');
-      $file = fopen($temporaryFilename, 'w');
-      $client->get($updateCheckResponse['source_url'])
-        ->setResponseBody($file)
-        ->send();
+      $client->get($updateCheckResponse['source_url'], [
+        'sink' => $temporaryFilename
+      ]);
 
       // Install it
       $output->writeln("Installing in ".dirname($targetFilename)." ...");
@@ -59,10 +59,9 @@ class SelfUpdateCommand extends Command {
       // Make executable
       chmod($targetFilename, 0755);
 
-      // Upate authorization
+      // Update authorization
       $output->writeln('Authorizing ...');
-      passthru('cloudobjects authorize '.$app['context']->getAAUID()
-        .' '.$updateCheckResponse['code'], $returnCode);
+      passthru('cloudobjects authorize '.$aauid.' '.$updateCheckResponse['code'], $returnCode);
 
       if ($returnCode==0) $output->writeln('Update complete!');
 
