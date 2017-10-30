@@ -23,8 +23,7 @@ $app->command(new Commands\ConfigurationJobMessagesCommand());
 $app->command(new Commands\ObjectGetCommand());
 $app->command(new Commands\ObjectDeleteCommand());
 
-/*$app->command(new Commands\SharedSecretGetCommand());
-$app->command(new Commands\AccountGatewayGetAccessTokenCommand()); */
+// $app->command(new Commands\AccountGatewayGetAccessTokenCommand());
 
 $app->command(new Commands\AttachmentGetCommand());
 $app->command(new Commands\AttachmentPutCommand());
@@ -40,5 +39,6 @@ $app->command(new Commands\ConsumersRemoveCommand);
 
 $app->command(new Commands\ProvidersListCommand);
 $app->command(new Commands\ProvidersRemoveCommand);
+$app->command(new Commands\ProvidersSecretGetCommand());
 
 $app->run();

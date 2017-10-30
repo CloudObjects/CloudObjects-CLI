@@ -12,14 +12,14 @@ use Cilex\Command\Command;
 use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
 use CloudObjects\SDK\COIDParser;
 
-class SharedSecretGetCommand extends Command {
+class ProvidersSecretGetCommand extends Command {
 
   protected function configure() {
-    $this->setName('shared-secret:get')
-      ->setAliases(array('secret'))
-      ->setDescription('Get the shared secret between two namespaces.')
-      ->addArgument('coid1', InputArgument::REQUIRED, 'The COID of the first namespace or any object within.')
-      ->addArgument('coid2', InputArgument::REQUIRED, 'The COID of the second namespace or any object within.');
+    $this->setName('domain-providers:secret')
+      ->setAliases(array('secret', 'domain-consumers:secret'))
+      ->setDescription('Get the shared secret between two namespaces. The namespaces do not have to be associated.')
+      ->addArgument('coid1', InputArgument::REQUIRED, 'The COID of the first namespace or any object within. You must be a member of this namespace.')
+      ->addArgument('coid2', InputArgument::OPTIONAL, 'The COID of the second namespace or any object within. You do not need to be a member of this namespace.', 'cloudobjects.io');
   }
 
   protected function execute(InputInterface $input, OutputInterface $output) {
@@ -38,10 +38,12 @@ class SharedSecretGetCommand extends Command {
       return;
     }
 
-    $secretResponse = $app['context']->getClient()
-      ->get('/ws/'.$coid1->getHost().'/sharedSecret:'.$coid2->getHost());
+    $secretResponse = json_decode($app['context']->getClient()
+      ->get('/dr/'.$coid1->getHost().'/providers/'.$coid2->getHost())
+      ->getBody(), true);
 
-    $output->writeln($secretResponse->getBody()->getContents());
+    
+    $output->writeln($secretResponse['shared_secret']);
     UpdateChecker::execute($app, $output);
   }
 
