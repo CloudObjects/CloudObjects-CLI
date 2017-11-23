@@ -18,7 +18,7 @@ Start the CLI Tool without a command or parameters to get a list of available co
 
 ## Help&Support
 
-You can report bugs or suggest features through [our GitHub Issues](https://github.com/CloudObjects/phpMAE/issues). We also accept PRs with bug fixes; if you wish to contribute features please create an issue first.
+You can report bugs or suggest features through [our GitHub Issues](https://github.com/CloudObjects/CloudObjects-CLI/issues). We also accept PRs with bug fixes; if you wish to contribute features please create an issue first.
 
 Make sure you follow the [CloudObjects Blog](https://blog.cloudobjects.io/) and [@CloudObjectsIO](https://twitter.com/CloudObjectsIO) for the latest updates, guides and tutorials.
 
