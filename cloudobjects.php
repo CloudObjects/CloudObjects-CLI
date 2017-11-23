@@ -10,7 +10,7 @@ require_once __DIR__."/vendor/autoload.php";
 
 date_default_timezone_set('UTC');
 
-$app = new \Cilex\Application('CloudObjects CLI', '0.2');
+$app = new \Cilex\Application('CloudObjects CLI', '0.3');
 CredentialManager::configure($app);
 $app->command(new Commands\SelfUpdateCommand());
 $app->command(new Commands\AuthorizeCommand());
