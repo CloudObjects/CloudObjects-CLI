@@ -17,6 +17,8 @@ $app->command(new Commands\AuthorizeCommand());
 $app->command(new Commands\DeauthorizeCommand());
 $app->command(new Commands\AccountCommand());
 
+$app->command(new Commands\DomainsListCommand());
+
 $app->command(new Commands\ConfigurationJobCreateCommand());
 $app->command(new Commands\ConfigurationJobMessagesCommand());
 
