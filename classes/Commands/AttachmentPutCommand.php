@@ -37,7 +37,8 @@ class AttachmentPutCommand extends Command {
 
     $app['context']->getClient()
       ->put('/ws/'.$coid->getHost().$coid->getPath().'/'.basename($filename), [
-          'body' => file_get_contents($filename)
+          'headers' => [ 'Content-Type' => 'application/octet-stream' ],
+          'body' => fopen($filename, 'r')
         ]);
 
     $output->writeln('File uploaded successfully.');
