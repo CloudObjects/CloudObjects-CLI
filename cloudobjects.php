@@ -23,6 +23,7 @@ $app->command(new Commands\ConfigurationJobCreateCommand());
 $app->command(new Commands\ConfigurationJobMessagesCommand());
 
 $app->command(new Commands\ObjectGetCommand());
+$app->command(new Commands\ObjectEditForkCommand());
 $app->command(new Commands\ObjectDeleteCommand());
 
 // $app->command(new Commands\AccountGatewayGetAccessTokenCommand());
