@@ -15,6 +15,6 @@ jobs:
           action: 'install -o'
 
       - name: Build PHAR with Robo
-        uses: accelys/action-robo@master
+        uses: lukasros/action-robo@master
         with:
           task: phar
