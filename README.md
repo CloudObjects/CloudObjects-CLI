@@ -1,6 +1,6 @@
 # CloudObjects CLI Tool
 
-[![Build Status](https://travis-ci.org/CloudObjects/CloudObjects-CLI.svg?branch=0.2)](https://travis-ci.org/CloudObjects/CloudObjects-CLI)
+![Build status](https://github.com/CloudObjects/CloudObjects-CLI/workflows/Build%20CLI/badge.svg)
 
 The CLI Tool allows you to interact with your account and objects on [CloudObjects](https://cloudobjects.io/) from the command line.
 

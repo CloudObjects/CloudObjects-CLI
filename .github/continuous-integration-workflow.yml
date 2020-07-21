@@ -1,0 +1,20 @@
+name: Build CLI
+on: [push]
+
+jobs:
+  build:
+    name: Build and deploy CLI
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Get code
+        uses: actions/checkout@v2
+
+      - name: Run composer
+        uses: nick-zh/composer-php@master
+        with:
+          action: 'install -o'
+
+      - name: Build PHAR with Robo
+        uses: accelys/action-robo@master
+        with:
+          task: phar
