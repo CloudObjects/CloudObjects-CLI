@@ -62,7 +62,7 @@ class ObjectEditForkCommand extends Command {
         }
 
         $objectResponse = $app['context']->getClient()
-            ->get('/ws/'.$coid->getHost().$coid->getPath().'/object', [
+            ->get('/ws/'.$coid->getHost().$coid->getPath().'/raw', [
                 'headers' => ['Accept' => $mimeType]
             ]);
 
