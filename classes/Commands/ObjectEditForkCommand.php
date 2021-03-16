@@ -17,6 +17,8 @@ use CloudObjects\SDK\COIDParser;
 
 class ObjectEditForkCommand extends Command {
 
+    use ConfigurationJobResultFormatterTrait;
+
     protected function configure() {
         $this->setName('object:edit-or-fork')
             ->setAliases([ 'ef' ])
@@ -78,15 +80,14 @@ class ObjectEditForkCommand extends Command {
         // Create configuration job if file was modified
         clearstatcache();
         if ($timestamp != filemtime($filename)) {
-            $app['context']->getClient()
-                ->post('/ws/configurationJob', [
-                    'body' => file_get_contents($filename)
-                ]);
-            $output->writeln("Configuration job has been created.");
+            $result = json_decode($app['context']->getClient()->post('/ws/configurationJobSync',
+                [ 'body' => file_get_contents($filename) ])->getBody(), true);
+            $this->printResponse($result, $output);
         } else {
             $output->writeln("No changes to object.");
         }
-    
+
+        unlink($filename);    
 
         UpdateChecker::execute($app, $output);
     }
