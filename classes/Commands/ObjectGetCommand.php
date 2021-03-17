@@ -10,9 +10,10 @@ use Exception;
 use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Cilex\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
+use Symfony\Component\Console\Command\Command;
 use CloudObjects\SDK\COIDParser;
+use CloudObjects\CLI\CredentialManager, CloudObjects\CLI\NotAuthorizedException,
+    CloudObjects\CLI\UpdateChecker;
 
 class ObjectGetCommand extends Command {
 
@@ -25,9 +26,8 @@ class ObjectGetCommand extends Command {
             ->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Format for the object description.', 'xml');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        $app = $this->getContainer();
-        if (!isset($app['context']))
+    protected function execute(InputInterface $input, OutputInterface $output) {        
+        if (CredentialManager::getContext() === null)
             throw new NotAuthorizedException;
 
         $coid = COIDParser::fromString($input->getArgument('coid'));
@@ -57,14 +57,16 @@ class ObjectGetCommand extends Command {
                 throw new Exception('Unsupported format!');
         }
 
-        $objectResponse = $app['context']->getClient()
+        $objectResponse = CredentialManager::getContext()->getClient()
             ->get('/ws/'.$coid->getHost().$coid->getPath().'/'
                 . ($input->getOption('raw') ? 'raw' : 'object'), [
                     'headers' => ['Accept' => $mimeType]
                 ]);
 
         $output->writeln((string)$objectResponse->getBody());
-        UpdateChecker::execute($app, $output);
+        UpdateChecker::execute($this->getApplication(), $output);
+
+        return Command::SUCCESS;
     }
 
 }

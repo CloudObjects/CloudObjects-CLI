@@ -11,8 +11,9 @@ use Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Cilex\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
+use Symfony\Component\Console\Command\Command;
+use CloudObjects\CLI\CredentialManager,
+    CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
 use CloudObjects\SDK\COIDParser;
 
 class ObjectEditForkCommand extends Command {
@@ -27,9 +28,8 @@ class ObjectEditForkCommand extends Command {
             ->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Format for the object description.', 'xml');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        $app = $this->getContainer();
-        if (!isset($app['context']))
+    protected function execute(InputInterface $input, OutputInterface $output) {        
+        if (CredentialManager::getContext() === null)
             throw new NotAuthorizedException;
 
         $editor = getenv('EDITOR');
@@ -63,7 +63,7 @@ class ObjectEditForkCommand extends Command {
                 throw new Exception('Unsupported format!');
         }
 
-        $objectResponse = $app['context']->getClient()
+        $objectResponse = CredentialManager::getContext()->getClient()
             ->get('/ws/'.$coid->getHost().$coid->getPath().'/raw', [
                 'headers' => ['Accept' => $mimeType]
             ]);
@@ -80,7 +80,7 @@ class ObjectEditForkCommand extends Command {
         // Create configuration job if file was modified
         clearstatcache();
         if ($timestamp != filemtime($filename)) {
-            $result = json_decode($app['context']->getClient()->post('/ws/configurationJobSync',
+            $result = json_decode(CredentialManager::getContext()->getClient()->post('/ws/configurationJobSync',
                 [ 'body' => file_get_contents($filename) ])->getBody(), true);
             $this->printResponse($result, $output);
         } else {
@@ -89,7 +89,8 @@ class ObjectEditForkCommand extends Command {
 
         unlink($filename);    
 
-        UpdateChecker::execute($app, $output);
+        UpdateChecker::execute($this->getApplication(), $output);
+        return Command::SUCCESS;
     }
 
 }

@@ -6,12 +6,18 @@
  
 namespace CloudObjects\CLI;
 
-use Cilex\Application;
 use ML\IRI\IRI;
+use Symfony\Component\Console\Application;
 use CloudObjects\SDK\AccountGateway\AAUIDParser,
     CloudObjects\SDK\AccountGateway\AccountContext;
 
 class CredentialManager  {
+
+    private static $context;
+
+    public static function getContext() {
+        return self::$context;
+    }
 
     private static function getFilename() {
         return getenv('HOME').DIRECTORY_SEPARATOR.'.cloudobjects';
@@ -20,7 +26,7 @@ class CredentialManager  {
     public static function configure(Application $app) {
         if (getenv('CO_AAUID') !== false && getenv('CO_ACCESS_TOKEN') !== false) {
             // If environmental variables are set, take them as first priority
-            $app['context'] = new AccountContext(
+            self::$context = new AccountContext(
                 AAUIDParser::fromString(getenv('CO_AAUID')),
                 getenv('CO_ACCESS_TOKEN')
             );
@@ -29,8 +35,8 @@ class CredentialManager  {
             // Otherwise, load stored authorization
             $data = json_decode(file_get_contents(self::getFilename()), true);
             if (isset($data['aauid']) && isset($data['access_token'])
-                && isset($data['version']) && $data['version'] == $app['console.version']) {
-                $app['context'] = new AccountContext(
+                    && isset($data['version']) && $data['version'] == $app->getVersion()) {
+                self::$context = new AccountContext(
                     AAUIDParser::fromString($data['aauid']),
                     $data['access_token']
                 );
@@ -42,7 +48,7 @@ class CredentialManager  {
         file_put_contents(self::getFileName(), json_encode([
             'aauid' => $aauid,
             'access_token' => $accessToken,
-            'version' => $app['console.version']
+            'version' => $app->getVersion()
         ]));
     }
 

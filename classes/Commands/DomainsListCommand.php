@@ -8,27 +8,28 @@ namespace CloudObjects\CLI\Commands;
 
 use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use Cilex\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException;
+use Symfony\Component\Console\Command\Command;
+use CloudObjects\CLI\CredentialManager, CloudObjects\CLI\NotAuthorizedException;
 use CloudObjects\SDK\COIDParser;
 
 class DomainsListCommand extends Command {
 
-  protected function configure() {
-    $this->setName('domains:list')
-      ->setDescription('List all the domains that the currently authorized account has access to.');
-  }
+    protected function configure() {
+        $this->setName('domains:list')
+            ->setDescription('List all the domains that the currently authorized account has access to.');
+    }
 
-  protected function execute(InputInterface $input, OutputInterface $output) {
-    $app = $this->getContainer();
-    if (!isset($app['context'])) throw new NotAuthorizedException();
+    protected function execute(InputInterface $input, OutputInterface $output) {    
+        if (CredentialManager::getContext() === null)
+            throw new NotAuthorizedException;
 
-    $domainsResponse = json_decode($app['context']->getClient()
-      ->get('/dr/')->getBody(), true);
+        $domainsResponse = json_decode(CredentialManager::getContext()->getClient()
+            ->get('/dr/')->getBody(), true);
 
-      foreach ($domainsResponse['domains'] as $domain) {
-        $output->writeln($domain);
-      }
-  }
+        foreach ($domainsResponse['domains'] as $domain)
+            $output->writeln($domain);
+      
+        return Command::SUCCESS;
+    }
 
 }

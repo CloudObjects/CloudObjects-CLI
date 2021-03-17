@@ -10,8 +10,9 @@ use Exception;
 use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Cilex\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
+use Symfony\Component\Console\Command\Command;
+use CloudObjects\CLI\CredentialManager, CloudObjects\CLI\NotAuthorizedException,
+    CloudObjects\CLI\UpdateChecker;
 
 class ConfigurationJobCreateCommand extends Command {
 
@@ -25,9 +26,8 @@ class ConfigurationJobCreateCommand extends Command {
             ->addOption('async', null, InputOption::VALUE_NONE, 'Process configuration job asynchronously.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        $app = $this->getContainer();
-        if (!isset($app['context']))
+    protected function execute(InputInterface $input, OutputInterface $output) {        
+        if (CredentialManager::getContext() === null)
             throw new NotAuthorizedException;
 
         if ($filename = $input->getArgument('filename')) {
@@ -41,16 +41,17 @@ class ConfigurationJobCreateCommand extends Command {
         // TODO: If no file is specified, data is read from standard input.
 
         if ($input->getOption('async')) {
-            $app['context']->getClient()->post('/ws/configurationJobAsync',
+            CredentialManager::getContext()->getClient()->post('/ws/configurationJobAsync',
                 [ 'body' => $content ]);
             $output->writeln('Configuration job has been created. Use the "configuration-job:messages" command to retrieve status.');
         } else {
-            $result = json_decode($app['context']->getClient()->post('/ws/configurationJobSync',
+            $result = json_decode(CredentialManager::getContext()->getClient()->post('/ws/configurationJobSync',
                 [ 'body' => $content ])->getBody(), true);
             $this->printResponse($result, $output);
         }
         
-        UpdateChecker::execute($app, $output);
+        UpdateChecker::execute($this->getApplication(), $output);
+        return Command::SUCCESS;
     }
 
 }

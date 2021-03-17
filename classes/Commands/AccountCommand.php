@@ -8,21 +8,23 @@ namespace CloudObjects\CLI\Commands;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Cilex\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException;
+use Symfony\Component\Console\Command\Command;
+use CloudObjects\CLI\CredentialManager, CloudObjects\CLI\NotAuthorizedException;
 
 class AccountCommand extends Command {
 
-  protected function configure() {
-    $this->setName('account')
-      ->setDescription('Get information about the currently authorized account.');
-  }
+    protected function configure() {
+        $this->setName('account')
+            ->setDescription('Get information about the currently authorized account.');
+    }
 
-  protected function execute(InputInterface $input, OutputInterface $output) {
-    $app = $this->getContainer();
-    if (!isset($app['context'])) throw new NotAuthorizedException();
+    protected function execute(InputInterface $input, OutputInterface $output) {    
+        if (CredentialManager::getContext() === null)
+            throw new NotAuthorizedException;
 
-    $output->writeln("Account:\t\t".$app['context']->getAAUID());
-  }
+        $output->writeln("Account:\t\t".CredentialManager::getContext()->getAAUID());
+        
+        return Command::SUCCESS;
+    }
 
 }

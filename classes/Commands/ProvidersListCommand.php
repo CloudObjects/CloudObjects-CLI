@@ -8,34 +8,35 @@ namespace CloudObjects\CLI\Commands;
 
 use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use Cilex\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException;
+use Symfony\Component\Console\Command\Command;
+use CloudObjects\CLI\CredentialManager, CloudObjects\CLI\NotAuthorizedException;
 use CloudObjects\SDK\COIDParser;
 
 class ProvidersListCommand extends Command {
 
-  protected function configure() {
-    $this->setName('domain-providers:list')
-      ->setDescription('List all the domains that are associated providers of a domain along with their roles.')
-      ->addArgument('hostname', InputArgument::REQUIRED, 'The hostname of the domain.');
-  }
-
-  protected function execute(InputInterface $input, OutputInterface $output) {
-    $app = $this->getContainer();
-    if (!isset($app['context'])) throw new NotAuthorizedException();
-
-    if (!preg_match(COIDParser::REGEX_HOSTNAME, $input->getArgument('hostname'))) {
-      $output->writeln('<error>Invalid hostname: '.$input->getArgument('hostname').'</error>');
-      return;
+    protected function configure() {
+        $this->setName('domain-providers:list')
+            ->setDescription('List all the domains that are associated providers of a domain along with their roles.')
+            ->addArgument('hostname', InputArgument::REQUIRED, 'The hostname of the domain.');
     }
 
-    $providersResponse = json_decode($app['context']->getClient()
-      ->get('/dr/'.$input->getArgument('hostname').'/providers')
-      ->getBody(), true);
+    protected function execute(InputInterface $input, OutputInterface $output) {    
+        if (CredentialManager::getContext() === null)
+            throw new NotAuthorizedException;
 
-    foreach ($providersResponse['providers'] as $key => $value) {
-      $output->writeln($key."\t\t".$value);
+        if (!preg_match(COIDParser::REGEX_HOSTNAME, $input->getArgument('hostname'))) {
+            $output->writeln('<error>Invalid hostname: '.$input->getArgument('hostname').'</error>');
+            return Command::FAILURE;
+        }
+
+        $providersResponse = json_decode(CredentialManager::getContext()->getClient()
+            ->get('/dr/'.$input->getArgument('hostname').'/providers')
+            ->getBody(), true);
+
+        foreach ($providersResponse['providers'] as $key => $value)
+            $output->writeln($key."\t\t".$value);
+
+        return Command::SUCCESS;
     }
-  }
 
 }

@@ -8,8 +8,8 @@ namespace CloudObjects\CLI\Commands;
 
 use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use Cilex\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException;
+use Symfony\Component\Console\Command\Command;
+use CloudObjects\CLI\CredentialManager, CloudObjects\CLI\NotAuthorizedException;
 use CloudObjects\SDK\COIDParser;
 use CloudObjects\SDK\AccountGateway\AAUIDParser;
 
@@ -23,8 +23,8 @@ class AccountGatewayGetAccessTokenCommand extends Command {
   }
 
   protected function execute(InputInterface $input, OutputInterface $output) {
-    $app = $this->getContainer();
-    if (!isset($app['context'])) throw new NotAuthorizedException();
+    
+    if (CredentialManager::getContext() === null) throw new NotAuthorizedException();
 
     $coid = COIDParser::fromString($input->getArgument('coid'));
 
@@ -39,7 +39,7 @@ class AccountGatewayGetAccessTokenCommand extends Command {
       return;
     }
 
-    $objectResponse = json_decode($app['context']->getClient()
+    $objectResponse = json_decode(CredentialManager::getContext()->getClient()
       ->get('/ws/'.$coid->getHost().$coid->getPath()
         .'/accessToken:'.AAUIDParser::getAAUID($aauid))
       ->getBody(), true);
