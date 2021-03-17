@@ -30,7 +30,7 @@ class ObjectEditForkCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $app = $this->getContainer();
         if (!isset($app['context']))
-            throw new NotAuthorizedException();
+            throw new NotAuthorizedException;
 
         $editor = getenv('EDITOR');
         if ($editor === false || trim($editor) == '')
