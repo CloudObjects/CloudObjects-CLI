@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use CloudObjects\CLI\CredentialManager,
     CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
 use CloudObjects\SDK\COIDParser;
@@ -80,13 +81,33 @@ class ObjectEditForkCommand extends Command {
         // Create configuration job if file was modified
         clearstatcache();
         if ($timestamp != filemtime($filename)) {
-            $result = json_decode(CredentialManager::getContext()->getClient()->post('/ws/configurationJobSync',
+            $response = json_decode(CredentialManager::getContext()->getClient()->post('/ws/configurationJobSync',
                 [ 'body' => file_get_contents($filename) ])->getBody(), true);
-            $this->printResponse($result, $output);
+            $this->printResponse($response, $output);
+
+            $helper = $this->getHelper('question');
+            $question = new ConfirmationQuestion('Do you want to reopen the editor (y/n)?', false);
+            
+            // On failure, ask user to retry
+            while ($response['result'] == 'failure' && $helper->ask($input, $output, $question)) {
+                // Repeat previous steps until successful
+                passthru($editor.' '.$filename.' > `tty`');
+
+                clearstatcache();
+                if ($timestamp != filemtime($filename)) {
+                    $response = json_decode(CredentialManager::getContext()->getClient()->post('/ws/configurationJobSync',
+                        [ 'body' => file_get_contents($filename) ])->getBody(), true);
+                    $this->printResponse($response, $output);
+                } else {
+                    $output->writeln("No changes to object.");
+                    break;        
+                }
+            }            
         } else {
             $output->writeln("No changes to object.");
         }
 
+        // Remove temporary file
         unlink($filename);    
 
         UpdateChecker::execute($this->getApplication(), $output);
