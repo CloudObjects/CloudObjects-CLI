@@ -9,7 +9,8 @@ namespace CloudObjects\CLI\Commands;
 use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
-use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
+use CloudObjects\CLI\CredentialManager, CloudObjects\CLI\NotAuthorizedException,
+    CloudObjects\CLI\UpdateChecker;
 use CloudObjects\SDK\COIDParser;
 
 class AttachmentGetCommand extends Command {

@@ -10,7 +10,8 @@ use Symfony\Component\Console\Input\InputInterface, Symfony\Component\Console\In
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 use GuzzleHttp\Exception\BadResponseException;
-use CloudObjects\CLI\NotAuthorizedException, CloudObjects\CLI\UpdateChecker;
+use CloudObjects\CLI\CredentialManager, CloudObjects\CLI\NotAuthorizedException,
+    CloudObjects\CLI\UpdateChecker;
 use CloudObjects\SDK\COIDParser;
 
 class AttachmentDeleteCommand extends Command {
