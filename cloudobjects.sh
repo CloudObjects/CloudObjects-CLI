@@ -1,0 +1,1 @@
+docker run --rm -ti -v $HOME:/root -v `pwd`:/workdir -w /workdir cloudobjects/cli $*
