@@ -14,5 +14,8 @@ ADD ./CloudObjects-CLI.phar /usr/local/bin/cloudobjects
 # Make CLI executable
 RUN chmod +x /usr/local/bin/cloudobjects
 
+# Provide editor env variable
+ENV EDITOR vi
+
 # Set entrypoint
 ENTRYPOINT [ "/usr/local/bin/cloudobjects" ]
